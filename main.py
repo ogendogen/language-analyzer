@@ -35,7 +35,7 @@ try:
         clearedData = clearData(fileContent)
         # print("clear data")
 
-        f = open("cleared data/" + fileName, "w", encoding="utf8")
+        f = open("cleared data/" + fileName, "w", encoding="utf8", newline="\n")
         f.write(clearedData)
         f.close()
     
