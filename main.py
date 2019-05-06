@@ -29,7 +29,7 @@ try:
     # loading up files and clearing data
     filesList = os.listdir("text samples")
     for fileName in filesList:
-        f = open("text samples/" + fileName, "r", encoding="utf8")
+        f = open("text samples/" + fileName, "r", encoding="utf8", newline="\n")
         fileContent = f.read()
         f.close()
         clearedData = clearData(fileContent)
