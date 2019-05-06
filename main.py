@@ -6,7 +6,7 @@ import os
 def clearData(data): # need to pass language name in parameter to check custom interpunction
     standardInterpunction = ["`", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "[", "{", "]", "}", "\\", "|", ";", ":", "'", "\"", ",", "<", ".", ">", "/", "?", "*"]
     digits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-    customInterpunction = list("todo")
+    customInterpunction = list()
 
     outputData = ""
     for literal in data:
@@ -18,9 +18,9 @@ def clearData(data): # need to pass language name in parameter to check custom i
             continue
         if literal in digits:
             continue
-        if literal == "\n" or literal == "r":
+        if literal == "\n" or literal == "\r" or literal == "\r\n":
             outputData = outputData + " "
-
+        
         outputData = outputData + literal.lower()
 
     return outputData
