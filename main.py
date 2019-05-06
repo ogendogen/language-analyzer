@@ -5,7 +5,7 @@ import os
 # clears data by removing interpunction, digits, line endings, redudant spaces and converting to lower case
 def clearData(data): # need to pass language name in parameter to check custom interpunction
     standardInterpunction = ["`", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "[", "{", "]", "}", "\\", "|", ";", ":", "'", "\"", ",", "<", ".", ">", "/", "?", "*"]
-    digits = "1234567890"
+    digits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
     customInterpunction = list("todo")
 
     outputData = ""
@@ -30,7 +30,7 @@ try:
     filesList = os.listdir("text samples")
     for fileName in filesList:
         f = open("text samples/" + fileName, "r", encoding="utf8")
-        fileContent = f.read().encode("utf-8")
+        fileContent = f.read()
         f.close()
         clearedData = clearData(fileContent)
         # print("clear data")
