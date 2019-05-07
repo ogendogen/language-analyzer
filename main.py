@@ -31,6 +31,17 @@ def listToDict(inputList):
     i = iter(inputList)
     return dict(zip(i, i))
 
+def sumPercentage(inputDict):
+    outputDict = dict()
+    sum = 0
+    for key in inputDict:
+        sum += inputDict[key]
+    
+    for key in inputDict:
+        outputDict[key] = float(inputDict[key]) / float(sum)
+
+    return json.dumps(outputDict)
+
 def countLettersFreq(text):
     litery = []
     letter_dict = {}
@@ -114,17 +125,29 @@ try:
         
         f = open("letter frequency/" + fileName, "w", encoding="utf8")
         ignore = {" "}
-        f.write(json.dumps(listToDict(countLettersFreq(clearedData))))
+        lettersDict = listToDict(countLettersFreq(clearedData))
+        f.write(json.dumps(lettersDict))
         f.close()
         
         f = open("bigrams/" + fileName, "w", encoding="utf8")
         ignore = {" "}
-        f.write(json.dumps(listToDict(countBigramsFreq(clearedData))))
+        bigramsDict = listToDict(countBigramsFreq(clearedData))
+        f.write(json.dumps(bigramsDict))
         f.close()
         
         f = open("trigrams/" + fileName, "w", encoding="utf8")
         ignore = {" "}
-        f.write(json.dumps(listToDict(countTrigramsFreq(clearedData))))
+        trigramsDict = listToDict(countTrigramsFreq(clearedData))
+        f.write(json.dumps(trigramsDict))
+        f.close()
+
+        lettersFinal = sumPercentage(lettersDict)
+        bigramsFinal = sumPercentage(bigramsDict)
+        trigramsFinal = sumPercentage(trigramsDict)
+
+        finalJson = { "letters": lettersFinal, "bigrams": bigramsFinal, "trigrams": trigramsFinal}
+        f = open(fileName.replace(".txt", ".json") , "w", encoding="utf-8")
+        f.write(json.dumps(finalJson))
         f.close()
 
     print("Finished succesfully!")
