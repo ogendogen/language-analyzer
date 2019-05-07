@@ -2,6 +2,8 @@ import time
 import datetime
 import os
 from operator import itemgetter
+# from itertools import zip_longest as zip
+import json
 
 # clears data by removing interpunction, digits, line endings, redudant spaces and converting to lower case
 def clearData(data): # need to pass language name in parameter to check custom interpunction
@@ -24,6 +26,10 @@ def clearData(data): # need to pass language name in parameter to check custom i
         outputData = outputData + literal.lower()
 
     return outputData
+
+def listToDict(inputList):
+    i = iter(inputList)
+    return dict(zip(i, i))
 
 def countLettersFreq(text):
     litery = []
@@ -107,23 +113,20 @@ try:
         f.close()
         
         f = open("letter frequency/" + fileName, "w", encoding="utf8")
-        ignore = {" "}     
-        f.write(str(countLettersFreq(clearedData)))
+        ignore = {" "}
+        f.write(json.dumps(listToDict(countLettersFreq(clearedData))))
         f.close()
         
         f = open("bigrams/" + fileName, "w", encoding="utf8")
-        ignore = {" "}     
-        f.write(str(countBigramsFreq(clearedData)))
+        ignore = {" "}
+        f.write(json.dumps(listToDict(countBigramsFreq(clearedData))))
         f.close()
         
         f = open("trigrams/" + fileName, "w", encoding="utf8")
-        ignore = {" "}     
-        f.write(str(countTrigramsFreq(clearedData)))
+        ignore = {" "}
+        f.write(json.dumps(listToDict(countTrigramsFreq(clearedData))))
         f.close()
-    
-            
-    
-    
+
     print("Finished succesfully!")
 except Exception as ex:
     time = time.time()
