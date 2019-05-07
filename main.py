@@ -7,8 +7,7 @@ from collections import Counter
 def clearData(data): # need to pass language name in parameter to check custom interpunction
     standardInterpunction = ["`", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "[", "{", "]", "}", "\\", "|", ";", ":", "'", "\"", ",", "<", ".", ">", "/", "?", "*"]
     digits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-    customInterpunction = list(["‘","–","—","»","«","„","“","’","”","\t","\n","\r","\r\n"])
-# ("‘","–","»","«","„","“")
+    customInterpunction = list(["‘","–","—","»","«","„","“","’","”","°","¿","¡","…","\t","\n","\r","\r\n"])
     outputData = ""
     for literal in data:
         if not isinstance(literal, str):
@@ -25,6 +24,16 @@ def clearData(data): # need to pass language name in parameter to check custom i
         outputData = outputData + literal.lower()
 
     return outputData
+
+def generate_ngrams(s, n):
+    
+    # Break sentence in the token, remove empty tokens
+    tokens = [token for token in s.split(" ") if token != ""]
+    
+    # Use the zip function to help us generate n-grams
+    # Concatentate the tokens into ngrams and return
+    ngrams = zip(*[token[i:] for i in range(n)])
+    return [" ".join(ngram) for ngram in ngrams]
 
 try:
     # loading up files and clearing data
@@ -43,9 +52,10 @@ try:
         ignore = {" "}     
         lettersFreq = Counter(x for x in clearedData if x not in ignore) 
         f.write(str(lettersFreq))
-        print(fileName," ",lettersFreq)
+        #print(fileName," ",lettersFreq)
         f.close()
-      
+  
+    
     
     print("Finished succesfully!")
 except Exception as ex:
