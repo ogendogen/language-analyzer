@@ -1,8 +1,6 @@
 import time
 import datetime
 import os
-from nltk import ngrams
-from collections import Counter
 from operator import itemgetter
 
 # clears data by removing interpunction, digits, line endings, redudant spaces and converting to lower case
@@ -39,7 +37,60 @@ def countLettersFreq(text):
     for letter in sorted(letter_dict.items(), key=itemgetter(1), reverse=True):
         litery += letter
     return litery
+
+def countBigramsFreq(text):
+    bigramy = []
+    bigram_dict = {}
+    bigram_holder = []
+    for letter in text:
+        if letter == ' ':
+            bigram_holder = []
+            continue
+        else:
+            bigram_holder.append(letter)
+
+        if len(bigram_holder) == 2:
+            bigram = bigram_holder[0] + bigram_holder[1]
+            try:
+                bigram_dict[bigram] += 1
+            except KeyError:
+                bigram_dict[bigram] = 1
+
+            last = bigram_holder.pop()
+            bigram_holder = []
+            bigram_holder.append(last)
+
+    for bigram in sorted(bigram_dict.items(), key=itemgetter(1), reverse=True):
+        bigramy += bigram
+    return bigramy
     
+def countTrigramsFreq(text):
+    trigramy = []
+    trigram_dict = {}
+    trigram_holder = []
+    for letter in text:
+        if letter == ' ':
+            trigram_holder = []
+            continue
+        else:
+            trigram_holder.append(letter)
+
+        if len(trigram_holder) == 3:
+            trigram = trigram_holder[0] + trigram_holder[1] + trigram_holder[2]
+            try:
+                trigram_dict[trigram] += 1
+            except KeyError:
+                trigram_dict[trigram] = 1
+
+            l1 = trigram_holder.pop()
+            l2 = trigram_holder.pop()
+            trigram_holder = []
+            trigram_holder.append(l2)
+            trigram_holder.append(l1)
+
+    for trigram in sorted(trigram_dict.items(), key=itemgetter(1), reverse=True):
+        trigramy += trigram
+    return trigramy
 
 
 try:
@@ -57,12 +108,18 @@ try:
         
         f = open("letter frequency/" + fileName, "w", encoding="utf8")
         ignore = {" "}     
-        lettersFreq = Counter(x for x in clearedData if x not in ignore) 
-        f.write(str(lettersFreq))
-        #print(fileName," ",lettersFreq)
+        f.write(str(countLettersFreq(clearedData)))
         f.close()
-        print(countLettersFreq(clearedData))
         
+        f = open("bigrams/" + fileName, "w", encoding="utf8")
+        ignore = {" "}     
+        f.write(str(countBigramsFreq(clearedData)))
+        f.close()
+        
+        f = open("trigrams/" + fileName, "w", encoding="utf8")
+        ignore = {" "}     
+        f.write(str(countTrigramsFreq(clearedData)))
+        f.close()
     
             
     
