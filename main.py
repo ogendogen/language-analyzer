@@ -31,7 +31,13 @@ def listToDict(inputList):
     i = iter(inputList)
     return dict(zip(i, i))
 
-def sumPercentage(inputDict):
+def dictToCsvString(inputDict, separator):
+    outputStr = ""
+    for key in inputDict:
+        outputStr += key + separator + str(inputDict[key]) + "\r\n"
+    return outputStr
+
+def sumPercentageToDict(inputDict):
     outputDict = dict()
     sum = 0
     for key in inputDict:
@@ -40,7 +46,7 @@ def sumPercentage(inputDict):
     for key in inputDict:
         outputDict[key] = float(inputDict[key]) / float(sum)
 
-    return json.dumps(outputDict, ensure_ascii=False)
+    return outputDict
 
 def countLettersFreq(text):
     litery = []
@@ -141,12 +147,29 @@ try:
         f.write(json.dumps(trigramsDict))
         f.close()
 
-        lettersFinal = sumPercentage(lettersDict)
-        bigramsFinal = sumPercentage(bigramsDict)
-        trigramsFinal = sumPercentage(trigramsDict)
+        lettersDictFinal = sumPercentageToDict(lettersDict)
+        bigramsDictFinal = sumPercentageToDict(bigramsDict)
+        trigramsDictFinal = sumPercentageToDict(trigramsDict)
 
-        finalJson = { "letters": lettersFinal, "bigrams": bigramsFinal, "trigrams": trigramsFinal}
-        f = open(fileName.replace(".txt", ".json") , "w", encoding="utf-8")
+        lettersJsonFinal = json.dumps(lettersDictFinal, ensure_ascii = False)
+        bigramsJsonFinal = json.dumps(bigramsDictFinal, ensure_ascii = False)
+        trigramsJsonFinal = json.dumps(trigramsDictFinal, ensure_ascii = False)
+
+        f = open("csv outputs/" + fileName.replace(".txt", "") + "-letters.txt", "w", encoding="utf-8")
+        f.write(dictToCsvString(lettersDictFinal, "|"))
+        f.close()
+
+        f = open("csv outputs/" + fileName.replace(".txt", "") + "-bigrams.txt", "w", encoding="utf-8")
+        f.write(dictToCsvString(bigramsDictFinal, "|"))
+        f.close()
+
+        f = open("csv outputs/" + fileName.replace(".txt", "") + "-trigrams.txt", "w", encoding="utf-8")
+        f.write(dictToCsvString(trigramsDictFinal, "|"))
+        f.close()
+
+
+        finalJson = { "letters": lettersJsonFinal, "bigrams": bigramsJsonFinal, "trigrams": trigramsJsonFinal}
+        f = open(fileName.replace(".txt", ".json"), "w", encoding="utf-8")
         f.write(json.dumps(finalJson, ensure_ascii=False))
         f.close()
 
