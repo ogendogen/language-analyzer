@@ -40,7 +40,7 @@ def sumPercentage(inputDict):
     for key in inputDict:
         outputDict[key] = float(inputDict[key]) / float(sum)
 
-    return json.dumps(outputDict)
+    return json.dumps(outputDict, ensure_ascii=False)
 
 def countLettersFreq(text):
     litery = []
@@ -147,7 +147,7 @@ try:
 
         finalJson = { "letters": lettersFinal, "bigrams": bigramsFinal, "trigrams": trigramsFinal}
         f = open(fileName.replace(".txt", ".json") , "w", encoding="utf-8")
-        f.write(json.dumps(finalJson))
+        f.write(json.dumps(finalJson, ensure_ascii=False))
         f.close()
 
     print("Finished succesfully!")
