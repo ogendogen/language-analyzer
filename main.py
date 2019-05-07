@@ -1,7 +1,9 @@
 import time
 import datetime
 import os
+from nltk import ngrams
 from collections import Counter
+from operator import itemgetter
 
 # clears data by removing interpunction, digits, line endings, redudant spaces and converting to lower case
 def clearData(data): # need to pass language name in parameter to check custom interpunction
@@ -25,15 +27,20 @@ def clearData(data): # need to pass language name in parameter to check custom i
 
     return outputData
 
-def generate_ngrams(s, n):
+def countLettersFreq(text):
+    litery = []
+    letter_dict = {}
+    for letter in text:
+        if letter != ' ':
+            try:
+                letter_dict[letter] += 1
+            except KeyError:
+                letter_dict[letter] = 1
+    for letter in sorted(letter_dict.items(), key=itemgetter(1), reverse=True):
+        litery += letter
+    return litery
     
-    # Break sentence in the token, remove empty tokens
-    tokens = [token for token in s.split(" ") if token != ""]
-    
-    # Use the zip function to help us generate n-grams
-    # Concatentate the tokens into ngrams and return
-    ngrams = zip(*[token[i:] for i in range(n)])
-    return [" ".join(ngram) for ngram in ngrams]
+
 
 try:
     # loading up files and clearing data
@@ -54,7 +61,10 @@ try:
         f.write(str(lettersFreq))
         #print(fileName," ",lettersFreq)
         f.close()
-  
+        print(countLettersFreq(clearedData))
+        
+    
+            
     
     
     print("Finished succesfully!")
