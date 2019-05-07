@@ -2,14 +2,13 @@ import time
 import datetime
 import os
 from operator import itemgetter
-# from itertools import zip_longest as zip
 import json
 
 # clears data by removing interpunction, digits, line endings, redudant spaces and converting to lower case
 def clearData(data): # need to pass language name in parameter to check custom interpunction
     standardInterpunction = ["`", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "[", "{", "]", "}", "\\", "|", ";", ":", "'", "\"", ",", "<", ".", ">", "/", "?", "*"]
     digits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-    customInterpunction = list(["‘","–","—","»","«","„","“","’","”","°","¿","¡","…","\t","\n","\r","\r\n"])
+    customInterpunction = list(["‘","–","—","»","«","„","“","’","”","°","¿","¡","…","¬","\t","\n","\r","\r\n"])
     outputData = ""
     for literal in data:
         if not isinstance(literal, str):
