@@ -1,13 +1,13 @@
 import time
 import datetime
 import os
+from collections import Counter
 
 # clears data by removing interpunction, digits, line endings, redudant spaces and converting to lower case
 def clearData(data): # need to pass language name in parameter to check custom interpunction
     standardInterpunction = ["`", "~", "!", "@", "#", "$", "%", "^", "&", "*", "(", ")", "-", "_", "=", "+", "[", "{", "]", "}", "\\", "|", ";", ":", "'", "\"", ",", "<", ".", ">", "/", "?", "*"]
     digits = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
-    customInterpunction = list()
-
+    customInterpunction = list(["‘","–","—","»","«","„","“","’","”","°","¿","¡","…","\t","\n","\r","\r\n"])
     outputData = ""
     for literal in data:
         if not isinstance(literal, str):
@@ -25,22 +25,39 @@ def clearData(data): # need to pass language name in parameter to check custom i
 
     return outputData
 
+def generate_ngrams(s, n):
+    
+    # Break sentence in the token, remove empty tokens
+    tokens = [token for token in s.split(" ") if token != ""]
+    
+    # Use the zip function to help us generate n-grams
+    # Concatentate the tokens into ngrams and return
+    ngrams = zip(*[token[i:] for i in range(n)])
+    return [" ".join(ngram) for ngram in ngrams]
+
 try:
     # loading up files and clearing data
     filesList = os.listdir("text samples")
     for fileName in filesList:
-        f = open("text samples/" + fileName, "r", encoding="utf8", newline="\n")
+        f = open("text samples/" + fileName, "r", encoding="utf8")
         fileContent = f.read()
         f.close()
         clearedData = clearData(fileContent)
         # print("clear data")
-
-        f = open("cleared data/" + fileName, "w", encoding="utf8", newline="\n")
+        f = open("cleared data/" + fileName, "w", encoding="utf8")
         f.write(clearedData)
         f.close()
+        
+        f = open("letter frequency/" + fileName, "w", encoding="utf8")
+        ignore = {" "}     
+        lettersFreq = Counter(x for x in clearedData if x not in ignore) 
+        f.write(str(lettersFreq))
+        #print(fileName," ",lettersFreq)
+        f.close()
+  
+    
     
     print("Finished succesfully!")
-
 except Exception as ex:
     time = time.time()
     timestamp = datetime.datetime.fromtimestamp(time).strftime('%Y%m%d%H%M%S')
