@@ -14,16 +14,25 @@ try:
         # reading files and clearing data
         fileContent = utils.readAllText("text samples/" + fileName)
         clearedData = analyzer.clearData(fileContent)
+
+        if not os.path.isdir("cleared data"):
+            os.mkdir("cleared data")
         utils.writeAllText("cleared data/" + fileName, clearedData)
 
         # counting frequency
         lettersDict = utils.listToDict(analyzer.countLettersFreq(clearedData))
+        if not os.path.isdir("letter frequency"):
+            os.mkdir("letter frequency")
         utils.writeAllText("letter frequency/" + fileName, json.dumps(lettersDict))
 
         bigramsDict = utils.listToDict(analyzer.countBigramsFreq(clearedData))
+        if not os.path.isdir("bigrams"):
+            os.mkdir("bigrams")
         utils.writeAllText("bigrams/" + fileName, json.dumps(bigramsDict))
-        
+
         trigramsDict = utils.listToDict(analyzer.countTrigramsFreq(clearedData))
+        if not os.path.isdir("trigrams"):
+            os.mkdir("trigrams")
         utils.writeAllText("trigrams/" + fileName, json.dumps(trigramsDict))
 
         # converting number of occurences to percentages
@@ -36,6 +45,8 @@ try:
         trigramsJsonFinal = json.dumps(trigramsDictFinal, ensure_ascii = False)
 
         # printing csv files for charts
+        if not os.path.isdir("csv outputs"):
+            os.mkdir("csv outputs")
         utils.writeAllText("csv outputs/" + fileName.replace(".txt", "") + "-letters.txt", utils.dictToCsvString(lettersDictFinal, "|"))
         utils.writeAllText("csv outputs/" + fileName.replace(".txt", "") + "-bigrams.txt", utils.dictToCsvString(bigramsDictFinal, "|"))
         utils.writeAllText("csv outputs/" + fileName.replace(".txt", "") + "-trigrams.txt", utils.dictToCsvString(trigramsDictFinal, "|"))
@@ -48,5 +59,7 @@ try:
 
 except Exception as ex:
     timestamp = datetime.datetime.fromtimestamp(time.time()).strftime('%Y%m%d%H%M%S')
+    if not os.path.isdir("error logs"):
+        os.mkdir("error logs")
     utils.writeAllText("error logs/errorlog" + timestamp + ".log", str(ex))
     print("Error: " + str(ex))
